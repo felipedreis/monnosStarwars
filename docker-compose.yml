@@ -1,0 +1,29 @@
+version: "3.4"
+services:
+
+  starwars-mongo:
+    image: "mongo:4.0.10"
+    container_name: "starwars-mongo"
+    environment:
+      MONGO_INITDB_DATABASE: "starwars"
+      MONGODB_USER: "starwars"
+      MONGODB_PASSWORD: "SWfh9EJzY3dnzwjc1oniIQgI5a58vteeVfeDFxLRbK0"
+      MONGODB_DB: "starwars"
+    ports:
+      - "27017:27017"
+    volumes:
+      - $HOME/data/starwars-mongo-data:/data/db
+
+  starwars-backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    depends_on:
+      - starwars-mongo
+    environment:
+      SPRING_DATA_MONGODB_URI: 'mongodb://starwars-mongo:27017/ac-sales-starwars'
+      SPRING_DATA_MONGODB_USERNAME: 'starwars'
+      SPRING_DATA_MONGODB_PASSWORD: 'SWfh9EJzY3dnzwjc1oniIQgI5a58vteeVfeDFxLRbK0'
+      MONGODB_PASSWORD: "SWfh9EJzY3dnzwjc1oniIQgI5a58vteeVfeDFxLRbK0"
+    ports:
+      - "8002:8000"
