@@ -1,5 +1,7 @@
 package com.b2w.starwars.domain;
 
+import java.util.Objects;
+
 public class PlanetDTO {
 
     public String id;
@@ -59,5 +61,22 @@ public class PlanetDTO {
 
     public void setQuantidadeFilmes(Integer quantidadeFilmes) {
         this.quantidadeFilmes = quantidadeFilmes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlanetDTO planetDTO = (PlanetDTO) o;
+        return id.equals(planetDTO.id) &&
+                Objects.equals(nome, planetDTO.nome) &&
+                Objects.equals(clima, planetDTO.clima) &&
+                Objects.equals(terreno, planetDTO.terreno) &&
+                Objects.equals(quantidadeFilmes, planetDTO.quantidadeFilmes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, clima, terreno, quantidadeFilmes);
     }
 }
