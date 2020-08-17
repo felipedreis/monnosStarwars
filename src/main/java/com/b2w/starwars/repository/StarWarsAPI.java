@@ -19,7 +19,7 @@ public class StarWarsAPI {
 
     private RestTemplate restTemplate;
 
-    private final String URL = "https://swapi.co/api/planets";
+    private final String URL = "https://swapi.py4e.com/api/planets";
 
     @Autowired
     public StarWarsAPI(@Qualifier(WebConfig.API_TEMPLATE) RestTemplate restTemplate){
