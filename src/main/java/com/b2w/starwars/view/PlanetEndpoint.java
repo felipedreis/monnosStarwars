@@ -24,7 +24,7 @@ public class PlanetEndpoint {
     @Autowired
     private PlanetFacade service;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Resources<PlanetResource> getPlanets(@RequestParam(value="query", required = false) String query) {
         if(query == null) {
             return new Resources<>(planetAssembler.toResources(service.findAll()));
@@ -40,7 +40,6 @@ public class PlanetEndpoint {
 
     @GetMapping(path="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public PlanetResource getPlanet(@PathVariable String id) {
-
         Optional<PlanetDTO> planet = service.findById(id);
 
         if(!planet.isPresent()) {

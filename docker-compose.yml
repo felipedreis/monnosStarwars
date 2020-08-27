@@ -11,8 +11,8 @@ services:
       MONGODB_DB: "starwars"
     ports:
       - "27017:27017"
-    volumes:
-      - $HOME/data/starwars-mongo-data:/data/db
+    #volumes:
+    #  - $HOME/data/starwars-mongo-data:/data/db #:rw
 
   starwars-backend:
     build:

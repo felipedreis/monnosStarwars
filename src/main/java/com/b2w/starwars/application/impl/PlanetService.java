@@ -24,7 +24,6 @@ public class PlanetService implements PlanetFacade {
 
     @Override
     public Collection<PlanetDTO> findAll() {
-
         List<PlanetDTO> planets = new ArrayList<>();
 
         for(Planet planet : planetDAO.findAll()){
@@ -36,7 +35,9 @@ public class PlanetService implements PlanetFacade {
 
     @Override
     public Collection<PlanetDTO> findByAPI(Integer page) {
-        return starWarsAPI.getPlanetsByPage(page);
+        Collection<PlanetDTO> planets = starWarsAPI.getPlanetsByPage(page);
+        persistPlanetsLocally(planets);
+        return planets;
     }
 
     @Override
@@ -80,6 +81,24 @@ public class PlanetService implements PlanetFacade {
     @Override
     public void remove(String id) {
         planetDAO.deleteById(id);
+    }
+
+    private void persistPlanetsLocally(Collection<PlanetDTO> planets) {
+        for (PlanetDTO externalPlanet : planets) {
+            List<Planet> localPlanets = planetDAO.findByNomeContaining(externalPlanet.getNome());
+
+            if (!localPlanets.isEmpty()) {
+                for (Planet local : localPlanets) {
+                    local.setNome(externalPlanet.getNome());
+                    local.setClima(externalPlanet.getClima());
+                    local.setTerreno(externalPlanet.getTerreno());
+                    local.setQuantidadeFilmes(externalPlanet.getQuantidadeFilmes());
+                    planetDAO.save(local);
+                }
+            } else {
+                planetDAO.save(toEntity(externalPlanet));
+            }
+        }
     }
 
     private Planet toEntity(PlanetDTO dto){
