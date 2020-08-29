@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PlanetDAO extends MongoRepository<Planet, String> {
@@ -12,5 +13,7 @@ public interface PlanetDAO extends MongoRepository<Planet, String> {
     public List<Planet> findAll();
 
     public List<Planet> findByNomeContaining(String name);
+
+    Optional<Planet> findOptionalByNome(String nome);
 
 }

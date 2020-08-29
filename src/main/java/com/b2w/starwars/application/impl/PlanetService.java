@@ -85,19 +85,15 @@ public class PlanetService implements PlanetFacade {
 
     private void persistPlanetsLocally(Collection<PlanetDTO> planets) {
         for (PlanetDTO externalPlanet : planets) {
-            List<Planet> localPlanets = planetDAO.findByNomeContaining(externalPlanet.getNome());
-
-            if (!localPlanets.isEmpty()) {
-                for (Planet local : localPlanets) {
-                    if (local.getNome().equals(externalPlanet.getNome())) {
-                        local.setNome(externalPlanet.getNome());
-                        local.setClima(externalPlanet.getClima());
-                        local.setTerreno(externalPlanet.getTerreno());
-                        local.setQuantidadeFilmes(externalPlanet.getQuantidadeFilmes());
-                        planetDAO.save(local);
-                    }
-                }
-            } else {
+            Optional<Planet> optionalPlanet  = planetDAO.findOptionalByNome(externalPlanet.getNome());
+            if (optionalPlanet.isPresent()) {
+                Planet local = optionalPlanet.get();
+                local.setNome(externalPlanet.getNome());
+                local.setClima(externalPlanet.getClima());
+                local.setTerreno(externalPlanet.getTerreno());
+                local.setQuantidadeFilmes(externalPlanet.getQuantidadeFilmes());
+                planetDAO.save(local);
+            }else {
                 planetDAO.save(toEntity(externalPlanet));
             }
         }
