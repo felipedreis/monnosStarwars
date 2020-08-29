@@ -89,11 +89,13 @@ public class PlanetService implements PlanetFacade {
 
             if (!localPlanets.isEmpty()) {
                 for (Planet local : localPlanets) {
-                    local.setNome(externalPlanet.getNome());
-                    local.setClima(externalPlanet.getClima());
-                    local.setTerreno(externalPlanet.getTerreno());
-                    local.setQuantidadeFilmes(externalPlanet.getQuantidadeFilmes());
-                    planetDAO.save(local);
+                    if (local.getNome().equals(externalPlanet.getNome())) {
+                        local.setNome(externalPlanet.getNome());
+                        local.setClima(externalPlanet.getClima());
+                        local.setTerreno(externalPlanet.getTerreno());
+                        local.setQuantidadeFilmes(externalPlanet.getQuantidadeFilmes());
+                        planetDAO.save(local);
+                    }
                 }
             } else {
                 planetDAO.save(toEntity(externalPlanet));
